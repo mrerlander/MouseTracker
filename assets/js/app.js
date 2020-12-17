@@ -23,17 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let pairIndex;
   let startTime;
   let endTime;
-
-function end() {
-  endTime = new Date();
-  var timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
-
-  // get seconds 
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds");
-}
   let faces = [
     "./assets/images/KHStudy2.jpg",
     "./assets/images/rsz_1bf225_2.jpg",
@@ -84,7 +73,7 @@ function end() {
     appId: "1:224502296732:web:376f8eaf24bee379a93d59",
     measurementId: "G-MLEBLR98B5",
   };
-  
+
   let database = firebase.initializeApp(firebaseConfig);
   firebase.analytics();
 
@@ -101,22 +90,27 @@ function end() {
     }
   };
 
-  function start(){ 
+  function start() {
     startBtnCoords = startBtn.getBoundingClientRect();
     let startX = (startBtnCoords.left + startBtnCoords.right) / 2;
     let startY = (startBtnCoords.top + startBtnCoords.bottom) / 2;
     startBtnCenter = { x: startX, y: startY };
     startBtn.addEventListener("click", function (e) {
       e.preventDefault;
-      let x = e.clientX;
-      let y = e.clientY;
-      startClickedCoords = { x, y };
-      startClicked = true;
-      startBtn.disabled = true;
-      startTime = new Date();
-      loadFaces();
+      if (count === facePairsOriginal.length) {
+        startBtn.disabled = true;
+        updateDatabase();
+      } else {
+        let x = e.clientX;
+        let y = e.clientY;
+        startClickedCoords = { x, y };
+        startClicked = true;
+        startBtn.disabled = true;
+        startTime = new Date();
+        loadFaces();
+      }
     });
-  }  
+  }
 
   function pairs(arr) {
     let l = arr.length;
@@ -130,14 +124,13 @@ function end() {
   }
 
   function loadFaces() {
-      
-      faceOneDiv = document.getElementById("face-one");
-      faceTwoDiv = document.getElementById("face-two");
+    faceOneDiv = document.getElementById("face-one");
+    faceTwoDiv = document.getElementById("face-two");
+    count++;
 
-      if (count < facePairsOriginal.length) {
+    if (count <= facePairsOriginal.length) {
       do {
-        if (count == facePairsOriginal.length) {
-          startBtn.innerText("Submit");
+        if(count === facePairsOriginal.length){
           break;
         }
         pairIndex = Math.floor(Math.random() * facePairs.length);
@@ -212,11 +205,6 @@ function end() {
       }
 
       facePairs.splice(pairIndex, 1);
-      count++;
-    } else {
-      startBtn.disabled = true;
-      startBtn.classList.add("invisible");
-      updateDatabase();
     }
   }
 
@@ -269,6 +257,9 @@ function end() {
     }
     console.log(trials);
     mouseCoords = [];
+    if (count == facePairsOriginal.length) {
+      startBtn.innerText ="Submit";
+    }
     startBtn.disabled = false;
   }
 
