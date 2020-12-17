@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-database.js"></script>
+    <script type="text/javascript" src="./assets/js/app.js"></script>
+    <title>Faces in social contexts</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div id="study-div">
+        <h1 class="text-center">Face Similarity Survey</h1>
+        <p class="text-center">
+          Please do not press the "Back" button at any time while participating
+          in this study or your progress may be lost.
+        </p>
+        <div id="pic-div" class="row justify-content-between invisible">
+          <div id="face-one" class="col-3"></div>
+          <div id="face-two" class="col-3"></div>
+        </div>
+      </div>
+    </div>
+    <div id="start-div" class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-2">
+          <button
+            id="start-btn"
+            class="btn-lg btn-block btn-secondary align-self-end"
+          >
+            Start
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
