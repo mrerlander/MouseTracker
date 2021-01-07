@@ -1,19 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
+  let checkBox = document.getElementById("consent");
+  let nextBtn = document.getElementById("submit-button");
   let startBtn = document.getElementById("start-btn");
-  let picDiv = document.getElementById("pic-div");
+  let inst1 = document.getElementById("instructions-one");
+  let inst2 = document.getElementById("instructions-two");
+  let inst3 = document.getElementById("instructions-three");
+  let instructionsBtn = document.getElementById("instructions-button");
+  let trialDiv = document.getElementById("trial-div");
   let startClicked = false;
   let startBtnCoords;
   let startBtnCenter = {};
-  let imageOneBottomRight;
-  let imageTwoBottomLeft;
-  let faceOneEl;
-  let faceTwoEl;
+  let buttonOneBottomRight;
+  let buttonTwoBottomLeft;
   let mouseCoords = [];
   let startClickedCoords;
-  let imageClickedCoords;
+  let buttonClickedCoords;
   let trials = [];
+  let rect1;
+  let rect2;
   let vWidth;
   let vHeight;
+  let practicePairs = [];
   let facePairs = [];
   let facePairsOriginal = [];
   let count = 0;
@@ -23,6 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
   let pairIndex;
   let startTime;
   let endTime;
+  let form = document.getElementById("form");
+  let age;
+  let race;
+  let gender;
+  let buttonOneText;
+  let buttonTwoText;
+  let instructions = "instructions.html";
+  let disqualified = "qualify.html";
   let faces = [
     "./assets/images/KHStudy2.jpg",
     "./assets/images/rsz_1bf225_2.jpg",
@@ -36,28 +51,86 @@ document.addEventListener("DOMContentLoaded", function () {
     "./assets/images/rsz_3if1.jpg",
     "./assets/images/rsz_3if2.jpg",
   ];
+  let practiceArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  if (checkBox) {
+    checkBox.onchange = function () {
+      if (this.checked) {
+        nextBtn.disabled = false;
+      } else {
+        nextBtn.disabled = true;
+      }
+    };
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function (e) {
+      e.preventDefault;
+      localStorage.setItem("consent", "true");
+      window.location.href = "form.html";
+    });
+  }
+
+  let instCounter = 0;
+  if (instructionsBtn) {
+    instructionsBtn.addEventListener("click", function (e) {
+      e.preventDefault;
+
+      if (instCounter === 2) {
+        window.location.href = "study.html";
+      }
+
+      if (instCounter === 1) {
+        inst2.style.display = "none";
+        inst3.style.display = "block";
+        instCounter++;
+      }
+
+      if (instCounter === 0) {
+        inst1.style.display = "none";
+        inst2.style.display = "block";
+        instCounter++;
+      }
+    });
+  }
+
+  if (form) {
+    form.onsubmit = submit;
+    function submit(e) {
+      e.preventDefault();
+      age = form.firstElementChild.lastElementChild.value;
+      race = form.children[1].lastElementChild.value;
+      gender = form.children[2].lastElementChild.value;
+
+      if (gender == "Non-binary" || race == "Multiracial" || race == "Other") {
+        window.location.href = disqualified;
+      } else {
+        window.location.href = instructions;
+      }
+    }
+  }
 
   class Trial {
     constructor(
-      leftImage,
-      rightImage,
-      clickedImage,
+      leftWord,
+      rightWord,
+      clickedWord,
       startButtonCenter,
       startButtonClickedCoords,
       bottomRightCoords,
       bottomLeftCoords,
-      imageClickedCoords,
+      buttonClickedCoords,
       mouseCoords,
       timeInMilliseconds
     ) {
-      this.leftImage = leftImage;
-      this.rightImage = rightImage;
-      this.clickedImage = clickedImage;
+      this.leftWord = leftWord;
+      this.rightWord = rightWord;
+      this.clickedWord = clickedWord;
       this.startButtonCenter = startButtonCenter;
       this.startButtonClickedCoords = startButtonClickedCoords;
-      this.bottomRightOfLeftPic = bottomRightCoords;
-      this.bottomLeftOfRightPic = bottomLeftCoords;
-      this.imageClickedCoords = imageClickedCoords;
+      this.bottomRightOfLeftButton = bottomRightCoords;
+      this.bottomLeftOfRightButton = bottomLeftCoords;
+      this.buttonClickedCoords = buttonClickedCoords;
       this.mouseCoords = mouseCoords;
       this.timeInMilliseconds = timeInMilliseconds;
     }
@@ -90,118 +163,179 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
+  let practice = true;
+  let practiceCounter = 0;
+
   function start() {
     startBtnCoords = startBtn.getBoundingClientRect();
     let startX = (startBtnCoords.left + startBtnCoords.right) / 2;
     let startY = (startBtnCoords.top + startBtnCoords.bottom) / 2;
     startBtnCenter = { x: startX, y: startY };
+    leftTrialDiv = document.getElementById("trial-left");
+    rightTrialDiv = document.getElementById("trial-right");
+    optionOne = document.getElementById("option-one");
+    optionTwo = document.getElementById("option-two");
+
     startBtn.addEventListener("click", function (e) {
       e.preventDefault;
-      if (count === facePairsOriginal.length) {
+      if (practice === true) {
         startBtn.disabled = true;
-        updateDatabase();
+        loadTrial();
       } else {
-        let x = e.clientX;
-        let y = e.clientY;
-        startClickedCoords = { x, y };
-        startClicked = true;
-        startBtn.disabled = true;
-        startTime = new Date();
-        loadFaces();
+        if (count === facePairsOriginal.length) {
+          startBtn.disabled = true;
+          updateDatabase();
+        } else {
+          if (practiceCounter === 10) {
+            document.getElementById("practice-over").classList.add("invisible");
+            leftTrialDiv.classList.remove("invisible");
+            rightTrialDiv.classList.remove("invisible");
+          }
+          let x = e.clientX;
+          let y = e.clientY;
+          startClickedCoords = { x, y };
+          startClicked = true;
+          startBtn.disabled = true;
+          startTime = new Date();
+          loadTrial();
+        }
+      }
+    });
+    optionOne.addEventListener("click", function (e) {
+      e.preventDefault;
+      if (practice === true) {
+        trialDiv.classList.add("invisible");
+        startBtn.disabled = false;
+        if (practiceCounter === 10) {
+          leftTrialDiv.classList.add("invisible");
+          rightTrialDiv.classList.add("invisible");
+          trialDiv.classList.remove("invisible");
+          document
+            .getElementById("practice-over")
+            .classList.remove("invisible");
+          practice = false;
+        }
+      } else {
+        rect1 = optionOne.getBoundingClientRect();
+        rect2 = optionTwo.getBoundingClientRect();
+        buttonOneBottomRight = { x: rect1.right, y: rect1.bottom };
+        buttonTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
+        buttonClickedCoords = { x: e.clientX, y: e.clientY };
+        saveData(
+          pair[0].substring(16),
+          pair[1].substring(16),
+          buttonOneBottomRight,
+          buttonTwoBottomLeft,
+          0,
+          buttonClickedCoords
+        );
+      }
+    });
+    optionTwo.addEventListener("click", function (e) {
+      e.preventDefault;
+      if (practice === true) {
+        trialDiv.classList.add("invisible");
+        startBtn.disabled = false;
+        if (practiceCounter === 10) {
+          leftTrialDiv.classList.add("invisible");
+          rightTrialDiv.classList.add("invisible");
+          trialDiv.classList.remove("invisible");
+          document
+            .getElementById("practice-over")
+            .classList.remove("invisible");
+          practice = false;
+        }
+      } else {
+        rect1 = optionOne.getBoundingClientRect();
+        rect2 = optionTwo.getBoundingClientRect();
+        buttonOneBottomRight = { x: rect1.right, y: rect1.bottom };
+        buttonTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
+        buttonClickedCoords = { x: e.clientX, y: e.clientY };
+        saveData(
+          pair[1].substring(16),
+          pair[0].substring(16),
+          buttonTwoBottomLeft,
+          buttonOneBottomRight,
+          1,
+          buttonClickedCoords
+        );
       }
     });
   }
 
   function pairs(arr) {
     let l = arr.length;
-
-    for (let i = 0; i < l; i++) {
-      for (let j = i + 1; j < l; j++) {
-        facePairs.push([arr[i], arr[j]]);
-        facePairsOriginal.push([arr[i], arr[j]]);
+    if (arr[0] === 0) {
+      for (let i = 0; i < l; i++) {
+        for (let j = i + 1; j < l; j++) {
+          practicePairs.push([arr[i], arr[j]]);
+        }
+      }
+    } else {
+      for (let i = 0; i < l; i++) {
+        for (let j = i + 1; j < l; j++) {
+          facePairs.push([arr[i], arr[j]]);
+          facePairsOriginal.push([arr[i], arr[j]]);
+        }
       }
     }
   }
 
-  function loadFaces() {
-    faceOneDiv = document.getElementById("face-one");
-    faceTwoDiv = document.getElementById("face-two");
-    count++;
+  function loadTrial() {
+    if (practice === true) {
+      practiceCounter++;
+      console.log(practiceCounter);
+      pairIndex = Math.floor(Math.random() * practicePairs.length);
+      pair = practicePairs[pairIndex];
 
-    if (count <= facePairsOriginal.length) {
-      do {
-        if(count === facePairsOriginal.length){
-          break;
-        }
-        pairIndex = Math.floor(Math.random() * facePairs.length);
-        pair = facePairs[pairIndex];
-        counter++;
-        if (facePairs.length <= 4) {
-          break;
-        }
-      } while (
-        pair[0] === temp[0] ||
-        pair[0] === temp[1] ||
-        pair[1] === temp[0] ||
-        pair[1] === temp[1]
-      );
-
-      temp = pair;
-      counter = 0;
-
-      if (!faceOneDiv.firstElementChild || !faceTwoDiv.firstElementChild) {
-        faceOneEl = document.createElement("img");
-        faceTwoEl = document.createElement("img");
-
-        faceOneEl.setAttribute("id", "face-1");
-        faceTwoEl.setAttribute("id", "face-2");
-        faceOneEl.setAttribute("src", pair[0]);
-        faceTwoEl.setAttribute("src", pair[1]);
-        faceOneEl.setAttribute("class", "img-fluid mx-auto d-block");
-        faceTwoEl.setAttribute("class", "img-fluid mx-auto d-block");
-        faceOneEl.addEventListener("click", function (e) {
-          e.preventDefault;
-          let rect1 = faceOneEl.getBoundingClientRect();
-          let rect2 = faceTwoEl.getBoundingClientRect();
-          imageOneBottomRight = { x: rect1.right, y: rect1.bottom };
-          imageTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
-          imageClickedCoords = { x: e.clientX, y: e.clientY };
-          saveData(
-            pair[0].substring(16),
-            pair[1].substring(16),
-            imageOneBottomRight,
-            imageTwoBottomLeft,
-            0,
-            imageClickedCoords
-          );
-        });
-        faceTwoEl.addEventListener("click", function (e) {
-          e.preventDefault;
-          let rect1 = faceOneEl.getBoundingClientRect();
-          let rect2 = faceTwoEl.getBoundingClientRect();
-          imageOneBottomRight = { x: rect1.right, y: rect1.bottom };
-          imageTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
-          imageClickedCoords = { x: e.clientX, y: e.clientY };
-          saveData(
-            pair[1].substring(16),
-            pair[0].substring(16),
-            imageTwoBottomLeft,
-            imageOneBottomRight,
-            1,
-            imageClickedCoords
-          );
-        });
-
-        faceOneDiv.appendChild(faceOneEl);
-        faceTwoDiv.appendChild(faceTwoEl);
-        picDiv.classList.remove("invisible");
+      if (Math.random() >= 0.5) {
+        buttonOneText = pair[0];
+        buttonTwoText = pair[1];
       } else {
-        faceOne = document.getElementById("face-1");
-        faceTwo = document.getElementById("face-2");
+        buttonOneText = pair[1];
+        buttonTwoText = pair[0];
+      }
 
-        faceOneEl.setAttribute("src", pair[0]);
-        faceTwoEl.setAttribute("src", pair[1]);
-        picDiv.classList.remove("invisible");
+      optionOne.innerHTML = buttonOneText;
+      optionTwo.innerHTML = buttonTwoText;
+
+      trialDiv.classList.remove("invisible");
+    } else {
+      count++;
+      console.log(count + " in the else of the load");
+
+      if (count <= facePairsOriginal.length) {
+        do {
+          if (count === facePairsOriginal.length) {
+            break;
+          }
+          pairIndex = Math.floor(Math.random() * facePairs.length);
+          pair = facePairs[pairIndex];
+          counter++;
+          if (facePairs.length <= 4) {
+            break;
+          }
+        } while (
+          pair[0] === temp[0] ||
+          pair[0] === temp[1] ||
+          pair[1] === temp[0] ||
+          pair[1] === temp[1]
+        );
+
+        temp = pair;
+        counter = 0;
+        buttonOneText = pair[0];
+        buttonTwoText = pair[1];
+        console.log(buttonOneText);
+
+        optionOne.innerHTML = buttonOneText;
+        optionTwo.innerHTML = buttonTwoText;
+
+        trialDiv.classList.remove("invisible");
+      } else {
+        optionOne.innerHTML = buttonOneText;
+        optionTwo.innerHTML = buttonTwoText;
+        trialDiv.classList.remove("invisible");
       }
 
       facePairs.splice(pairIndex, 1);
@@ -209,56 +343,64 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function saveData(
-    clickedImage,
-    otherImage,
-    image1Coords,
-    image2Coords,
+    clickedWord,
+    otherWord,
+    word1Coords,
+    word2Coords,
     leftOrRight,
-    imgClickedCoords
+    wordClickedCoords
   ) {
     endTime = new Date();
     let timeInMilliseconds = endTime - startTime;
-    picDiv.classList.add("invisible");
+    trialDiv.classList.add("invisible");
     startClicked = false;
     if (leftOrRight === 0) {
       let data = new Trial(
-        clickedImage,
-        otherImage,
-        clickedImage,
+        clickedWord,
+        otherWord,
+        clickedWord,
         startBtnCenter,
         startClickedCoords,
-        image1Coords,
-        image2Coords,
-        imgClickedCoords,
+        word1Coords,
+        word2Coords,
+        wordClickedCoords,
         mouseCoords,
         timeInMilliseconds
       );
       vWidth = window.innerWidth;
       vHeight = window.innerHeight;
       data.screenSize = { vWidth, vHeight };
+      data.age = age;
+      data.race = race;
+      data.gender = gender;
       trials.push(data);
+      console.log(trials);
     } else {
       let data = new Trial(
-        otherImage,
-        clickedImage,
-        clickedImage,
+        otherWord,
+        clickedWord,
+        clickedWord,
         startBtnCenter,
         startClickedCoords,
-        image1Coords,
-        image2Coords,
-        imgClickedCoords,
+        word1Coords,
+        word2Coords,
+        wordClickedCoords,
         mouseCoords,
         timeInMilliseconds
       );
       vWidth = window.innerWidth;
       vHeight = window.innerHeight;
       data.screenSize = { vWidth, vHeight };
+      data.age = age;
+      data.race = race;
+      data.gender = gender;
       trials.push(data);
+      console.log(trials);
     }
-    console.log(trials);
+
     mouseCoords = [];
     if (count == facePairsOriginal.length) {
-      startBtn.innerText ="Submit";
+      startBtn.innerHTML = "Submit";
     }
     startBtn.disabled = false;
   }
@@ -269,6 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 
+  pairs(practiceArr);
   pairs(faces);
   start();
 });

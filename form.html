@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-database.js"></script>
+    <script type="text/javascript" src="./assets/js/app.js"></script>
+    <title>Faces in social contexts</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div id="info-form">
+        <h3 class="font-weight-bold text-center">
+          Please fill out the form below:
+        </h3>
+        <div class="row justify-content-center">
+          <div class="col-12 col-sm-6">
+            <form id="form">
+              <div class="form-group">
+                <label for="age">What is your age in years?</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="age"
+                  min="18"
+                  max="99"
+                  maxlength="2"
+                  placeholder="Valid ages are 18-99"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="race">What is your race/ethnic identity?</label>
+                <select class="form-control" id="race" required>
+                  <option value="" selected disabled>Select One</option>
+                  <option value="Asian">Asian</option>
+                  <option value="Black">Black</option>
+                  <option value="Latino">Latino</option>
+                  <option value="White">White</option>
+                  <option value="Multiracial">
+                    Multiracial
+                  </option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="gender">What is your gender?</label>
+                <select class="form-control" id="gender" required>
+                  <option value="" selected disabled>Select One</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Non-binary">Non-binary</option>
+                </select>
+              </div>
+              <button
+                id="submit-form-button"
+                type="submit"
+                class="btn-lg btn-outline-dark"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

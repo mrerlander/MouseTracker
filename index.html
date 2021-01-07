@@ -3,45 +3,186 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
-    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-database.js"></script>
     <script type="text/javascript" src="./assets/js/app.js"></script>
     <title>Faces in social contexts</title>
   </head>
   <body>
-    <div class="container-fluid">
-      <div id="study-div">
-        <h1 class="text-center">For Debbie: Whatever you want to call this goes here</h1>
-        <p class="text-center">
-          Please do not press the "Back" button at any time while participating
-          in this study or your progress may be lost.
-        </p>
-        <div id="pic-div" class="row justify-content-between invisible">
-          <div id="face-one" class="col-3"></div>
-          <div id="face-two" class="col-3"></div>
-        </div>
-      </div>
-    </div>
-    <div id="start-div" class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-2">
-          <button
-            id="start-btn"
-            class="btn-lg btn-block btn-secondary align-self-end"
-          >
-            Start
-          </button>
-        </div>
-      </div>
+    <div id="landing" class="container">
+    <h6 class="text-center font-weight-bold">California State University, Northridge</h6>
+    <h5 class="text-center font-weight-bold">CONSENT TO ACT AS A HUMAN RESEARCH PARTICIPANT</h5>
+    <br />
+    <h6 class="text-center">Faces in social contexts</h6>
+    <br />
+    <p>
+      You are being asked to participate in a research study. Faces in social
+      contexts, a study conducted by Debbie S. Ma, PhD. Participation in this
+      study is completely voluntary. Please read the information below and ask
+      questions about anything that you do not understand before deciding if you
+      want to participate. A researcher listed below will be available to answer
+      your questions.
+    </p>
+    <br />
+    <h5 class="text-center font-weight-bold">RESEARCH TEAM</h5>
+    <h6 class="text-center font-weight-bold">Researcher:</h6>
+    <p class="text-center">Debbie S. Ma</p>
+    <p class="text-center">Department of Psychology</p>
+    <p class="text-center">18111 Nordhoff St.</p>
+    <p class="text-center">Northridge, CA 91330-8255</p>
+    <p class="text-center">818.677.2924</p>
+    <p class="text-center">Debbie.Ma@csun.edu</p>
+    <br />
+    <h5 class="font-weight-bold">PURPOSE OF STUDY</h5>
+    <p>
+      The purpose of this research study is to understand how individuals view
+      others based on pictures.
+    </p>
+    <br />
+    <h5 class="font-weight-bold">SUBJECTS</h5>
+    <h6 class="font-weight-bold">Inclusion Requirements</h6>
+    <p>
+      You are eligible to participate in this study if you at least 18 years old
+      and have normal or corrected vision.
+    </p>
+    <br />
+    <h6 class="font-weight-bold">Exclusion Requirements</h6>
+    <p>
+      You are not eligible to participate in this study if you are not at least
+      18 years old or if you do not have normal or corrected vision.
+    </p>
+    <br />
+    <h6 class="font-weight-bold">Time Commitment</h6>
+    <p>
+      This study will involve approximately 15-30 minutes of your time. You must
+      complete the study within the next 48 hours, or your participation will be
+      terminated by the mTurk system.
+    </p>
+    <br />
+    <h5 class="font-weight-bold">PROCEDURES</h5>
+    <p>
+      The following procedures will occur after you provide consent. You will
+      see a series of faces and be asked to make judgments about them or learn
+      them. Afterward, you may be tested for your memory of these faces. At the
+      end of the study, you will be asked to provide basic demographic
+      information &#40;e.g., race, age, and gender&#41;. Finally, you will receive a
+      full debriefing.
+    </p>
+    <br />
+    <h5 class="font-weight-bold">RISKS AND DISCOMFORTS</h5>
+    <p>
+      This study involves no more than minimal risk. There are no known harms or
+      discomforts associated with this study beyond those encountered in normal
+      daily life.
+    </p>
+    <br />
+    <h5 class="font-weight-bold">BENEFITS</h5>
+    <h6 class="font-weight-bold">Subject Benefits</h6>
+    <p>
+      The possible benefits you may experience from the procedures described in
+      this study include learning about the scientific process and psychological
+      research. It is also possible that you may not directly benefit from
+      participation in this study.
+    </p>
+    <br />
+    <h6 class="font-weight-bold">Benefits to Others or Society</h6>
+    <p>
+      This study will allow us to have a greater understanding of face
+      perception.
+    </p>
+    <h5 class="font-weight-bold">ALTERNATIVES TO PARTICIPATION</h5>
+    <p>
+      The only alternative to participation in this study is not to participate.
+    </p>
+    <br />
+    <h class="font-weight-bold">COMPENSATION, COSTS AND REIMBURSEMENT</h5>
+    <h6 class="font-weight-bold">Compensation for Participation</h6>
+    <p>You will receive $1.25 for approximately 10 minutes of participation.</p>
+    <br />
+    <h5 class="font-weight-bold">WITHDRAWAL OR TERMINATION FROM THE STUDY AND CONSEQUENCES</h5>
+    <p class="font-weight-normal">
+      You are free to withdraw from this study at any time.
+      <b class="font-weight-bold"
+        >If you decide to withdraw from this study you should notify the
+        research team immediately and you may close your browser window to end
+        the study.</b
+      >
+      The research team cannot end your participation, but should you fail to
+      complete the study and provide the completion code proving your full
+      participation, you may not receive payment for your participation.
+    </p>
+    <br />
+    <h5 class="font-weight-bold">CONFIDENTIALITY</h5>
+    <h6 class="font-weight-bold">Subject Identifiable Data</h6>
+    <p class="font-weight-normal">
+      No identifiable information that will be collected and your data will not
+      be traceable to you.
+    </p>
+    <br />
+    <h6 class="font-weight-bold">Data Storage</h6>
+    <p class="font-weight-normal">
+      All research data will be stored on a laptop computer that is password
+      protected and only accessible by the principal investigator.
+    </p>
+    <br />
+    <h6 class="font-weight-bold">Data Access</h6>
+    <p class="font-weight-normal">
+      The researcher named on the first page of this form will have access to
+      your study records. Aggregated data will be shared with research
+      associates of the researcher. Again, no information that personally
+      identifies you will be collected.
+    </p>
+    <br />
+    <h6 class="font-weight-bold">Data Retention</h6>
+    <p class="font-weight-normal">
+      The researchers intend to keep the research data indefinitely and
+      aggregated data may be shared with other researchers for research purposes
+      only.
+    </p>
+    <br />
+    <h5 class="font-weight-bold">IF YOU HAVE QUESTIONS</h5>
+    <p class="font-weight-normal">
+      If you have any comments, concerns, or questions regarding the conduct of
+      this research please contact the research team listed on the first page of
+      this form.
+    </p>
+    <br />
+    <p class="font-weight-normal">
+      If you have concerns or complaints about the research study, research
+      team, or questions about your rights as a research participant, please
+      contact Research and Sponsored Projects, 18111 Nordhoff Street, California
+      State University, Northridge, Northridge, CA 91330-8232, or phone
+      818-677-2901.
+    </p>
+    <br />
+    <h5 class="font-weight-bold">VOLUNTARY PARTICIPATION STATEMENT</h5>
+    <p class="font-weight-normal">
+      You should not agree to participate unless you have read this form.
+      <b class="font-weight-bold">Participation in this study is voluntary.</b> You may refuse to answer
+      any question or discontinue your involvement at any time without penalty
+      or loss of benefits to which you might otherwise be entitled. Your
+      decision will not affect your relationship with California State
+      University, Northridge. If you have questions before committing to
+      participate, please contact the researcher immediately.
+    </p>
+    <br />
+    <h6 class="font-weight-bold">
+      If you agree to participate in this study, please check the box below and
+      click next.
+    </h6>
+    <br />
+    <input type="checkbox" id="consent" name="consent" value="I Agree" />
+    <label for="consent"> I Agree </label>
+    <br />
+    <br />
+    <button
+      type="button"
+      id="submit-button"
+      class="btn btn-secondary"
+      disabled
+    >
+      Next
+    </button>
     </div>
   </body>
 </html>
