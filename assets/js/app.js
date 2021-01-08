@@ -21,8 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let vWidth;
   let vHeight;
   let practicePairs = [];
-  let facePairs = [];
-  let facePairsOriginal = [];
   let count = 0;
   let temp = [0, 0];
   let pair = [0, 0];
@@ -38,20 +36,63 @@ document.addEventListener("DOMContentLoaded", function () {
   let buttonTwoText;
   let instructions = "instructions.html";
   let disqualified = "qualify.html";
-  let faces = [
-    "./assets/images/KHStudy2.jpg",
-    "./assets/images/rsz_1bf225_2.jpg",
-    "./assets/images/rsz_1bf254_2.jpg",
-    "./assets/images/rsz_1bfage393_2.jpg",
-    "./assets/images/rsz_1if3.jpg",
-    "./assets/images/rsz_1if5.jpg",
-    "./assets/images/rsz_2bf238_2.jpg",
-    "./assets/images/rsz_2bfage39_3.jpg",
-    "./assets/images/rsz_2if4.jpg",
-    "./assets/images/rsz_3if1.jpg",
-    "./assets/images/rsz_3if2.jpg",
+  let asianArr = [
+    "Smart",
+    "Academic",
+    "Productive",
+    "Educated",
+    "Petite",
+    "Rice",
+    "Family-oriented",
+    "Scientific",
+  ];
+  let blackArr = [
+    "Strong",
+    "Barbeque",
+    "Musical",
+    "Cool",
+    "Football",
+    "Liberal",
+    "Masculine",
+    "Muscular",
+  ];
+  let latinaArr = [
+    "Religious",
+    "Pi&ntilde;ata",
+    "Tacos",
+    "Catholic",
+    "fun",
+    "Mariachi",
+    "Proud",
+    "Farmer",
+  ];
+  let whiteArr = [
+    "Suburban",
+    "Fortunate",
+    "Patriotic",
+    "Rich",
+    "American",
+    "Christian",
+    "Smart",
+    "Proper",
+    "European",
+  ];
+  let womenArr = [
+    "Feminine",
+    "Caring",
+    "Caregiver",
+    "Nurse",
+    "Pretty",
+    "Baking",
+    "Loving",
+    "Soft",
   ];
   let practiceArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let racePairs = [];
+  let genderPairs = [];
+  let challengePairs = [];
+  let allPairsOriginal;
+  let allPairs;
 
   if (checkBox) {
     checkBox.onchange = function () {
@@ -95,20 +136,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (form) {
-    form.onsubmit = submit;
-    function submit(e) {
-      e.preventDefault();
-      age = form.firstElementChild.lastElementChild.value;
-      race = form.children[1].lastElementChild.value;
-      gender = form.children[2].lastElementChild.value;
+    // if (localStorage.getItem("disqualified")) {
+    //   window.location.href = disqualified;
+    // } else {
+      localStorage.clear();
+      form.onsubmit = submit;
+      function submit(e) {
+        e.preventDefault();
+        age = form.firstElementChild.lastElementChild.value;
+        race = form.children[1].lastElementChild.value;
+        gender = form.children[2].lastElementChild.value;
 
-      if (gender == "Non-binary" || race == "Multiracial" || race == "Other") {
-        window.location.href = disqualified;
-      } else {
-        window.location.href = instructions;
+        if (
+          gender == "Non-binary" ||
+          gender == "Male" ||
+          race == "Multiracial" ||
+          race == "Other"
+        ) {
+          window.location.href = disqualified;
+        } else {
+          localStorage.setItem("age", age);
+          localStorage.setItem("race", race);
+          localStorage.setItem("gender", gender);
+          window.location.href = instructions;
+        }
       }
     }
-  }
+  // }
 
   class Trial {
     constructor(
@@ -167,6 +221,32 @@ document.addEventListener("DOMContentLoaded", function () {
   let practiceCounter = 0;
 
   function start() {
+    age = localStorage.getItem("age");
+    race = localStorage.getItem("race");
+    gender = localStorage.getItem("gender");
+    console.log(race);
+    switch (race.toLowerCase()) {
+      case "asian":
+        pairs(asianArr, "race");
+        break;
+
+      case "black":
+        pairs(blackArr, "race");
+        break;
+
+      case "latina":
+        pairs(latinaArr, "race");
+        break;
+
+      case "white":
+        pairs(whiteArr, "race");
+        break;
+
+      default:
+        console.log("ruh roh");
+        break;
+    }
+    concat();
     startBtnCoords = startBtn.getBoundingClientRect();
     let startX = (startBtnCoords.left + startBtnCoords.right) / 2;
     let startY = (startBtnCoords.top + startBtnCoords.bottom) / 2;
@@ -182,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
         startBtn.disabled = true;
         loadTrial();
       } else {
-        if (count === facePairsOriginal.length) {
+        if (count === allPairsOriginal.length) {
           startBtn.disabled = true;
           updateDatabase();
         } else {
@@ -263,19 +343,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function pairs(arr) {
-    let l = arr.length;
-    if (arr[0] === 0) {
-      for (let i = 0; i < l; i++) {
-        for (let j = i + 1; j < l; j++) {
-          practicePairs.push([arr[i], arr[j]]);
-        }
+  function concat() {
+    let userRaceArr;
+    switch (race.toLowerCase()) {
+      case "asian":
+        userRaceArr = asianArr;
+        break;
+
+      case "black":
+        userRaceArr = blackArr;
+        break;
+
+      case "latina":
+        userRaceArr = latinaArr;
+        break;
+
+      case "white":
+        userRaceArr = whiteArr;
+        break;
+
+      default:
+        console.log("ruh roh");
+        break;
+    }
+    for (let i = 0; i < userRaceArr.length; i++) {
+      for (let j = 0; j < womenArr.length; j++) {
+        challengePairs.push([userRaceArr[i], womenArr[j]]);
+        challengePairs.push([womenArr[j], userRaceArr[i]]);
       }
-    } else {
-      for (let i = 0; i < l; i++) {
-        for (let j = i + 1; j < l; j++) {
-          facePairs.push([arr[i], arr[j]]);
-          facePairsOriginal.push([arr[i], arr[j]]);
+    }
+
+    allPairsOriginal = [].concat(challengePairs, racePairs, genderPairs);
+    allPairs = [...allPairsOriginal];
+    console.log(allPairs);
+  }
+
+  function pairs(arr, arrType) {
+    let l = arr.length;
+
+    for (let i = 0; i < l; i++) {
+      for (let j = i + 1; j < l; j++) {
+        switch (arrType) {
+          case "race":
+            racePairs.push([arr[i], arr[j]]);
+            racePairs.push([arr[j], arr[i]]);
+            break;
+
+          case "gender":
+            genderPairs.push([arr[i], arr[j]]);
+            genderPairs.push([arr[j], arr[i]]);
+            break;
+
+          case "practice":
+            practicePairs.push([arr[i], arr[j]]);
+            break;
+
+          default:
+            break;
         }
       }
     }
@@ -304,15 +428,15 @@ document.addEventListener("DOMContentLoaded", function () {
       count++;
       console.log(count + " in the else of the load");
 
-      if (count <= facePairsOriginal.length) {
+      if (count <= allPairsOriginal.length) {
         do {
-          if (count === facePairsOriginal.length) {
+          if (count === allPairsOriginal.length) {
             break;
           }
-          pairIndex = Math.floor(Math.random() * facePairs.length);
-          pair = facePairs[pairIndex];
+          pairIndex = Math.floor(Math.random() * allPairs.length);
+          pair = allPairs[pairIndex];
           counter++;
-          if (facePairs.length <= 4) {
+          if (allPairs.length <= 4) {
             break;
           }
         } while (
@@ -338,7 +462,7 @@ document.addEventListener("DOMContentLoaded", function () {
         trialDiv.classList.remove("invisible");
       }
 
-      facePairs.splice(pairIndex, 1);
+      allPairs.splice(pairIndex, 1);
     }
   }
 
@@ -372,6 +496,7 @@ document.addEventListener("DOMContentLoaded", function () {
       data.screenSize = { vWidth, vHeight };
       data.age = age;
       data.race = race;
+      console.log(race);
       data.gender = gender;
       trials.push(data);
       console.log(trials);
@@ -399,7 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     mouseCoords = [];
-    if (count == facePairsOriginal.length) {
+    if (count == allPairsOriginal.length) {
       startBtn.innerHTML = "Submit";
     }
     startBtn.disabled = false;
@@ -411,7 +536,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 
-  pairs(practiceArr);
-  pairs(faces);
-  start();
+  pairs(practiceArr, "practice");
+  pairs(womenArr, "gender");
+  if (startBtn) {
+    start();
+  }
 });
