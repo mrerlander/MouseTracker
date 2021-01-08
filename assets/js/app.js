@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Rice",
     "Family-oriented",
     "Scientific",
+    "Asian"
   ];
   let blackArr = [
     "Strong",
@@ -55,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Liberal",
     "Masculine",
     "Muscular",
+    "Black"
   ];
   let latinaArr = [
     "Religious",
@@ -65,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Mariachi",
     "Proud",
     "Farmer",
+    "Latina"
   ];
   let whiteArr = [
     "Suburban",
@@ -75,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Christian",
     "Smart",
     "Proper",
-    "European",
+    "White"
   ];
   let womenArr = [
     "Feminine",
@@ -86,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Baking",
     "Loving",
     "Soft",
+    "Woman"
   ];
   let practiceArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   let racePairs = [];
@@ -136,9 +140,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (form) {
-    // if (localStorage.getItem("disqualified")) {
-    //   window.location.href = disqualified;
-    // } else {
+    if (localStorage.getItem("disqualified")) {
+      window.location.href = disqualified;
+    } else {
       localStorage.clear();
       form.onsubmit = submit;
       function submit(e) {
@@ -162,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     }
-  // }
+  }
 
   class Trial {
     constructor(
@@ -234,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
         pairs(blackArr, "race");
         break;
 
-      case "latina":
+      case "latino":
         pairs(latinaArr, "race");
         break;
 
@@ -302,8 +306,8 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
         buttonClickedCoords = { x: e.clientX, y: e.clientY };
         saveData(
-          pair[0].substring(16),
-          pair[1].substring(16),
+          pair[0],
+          pair[1],
           buttonOneBottomRight,
           buttonTwoBottomLeft,
           0,
@@ -332,8 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
         buttonClickedCoords = { x: e.clientX, y: e.clientY };
         saveData(
-          pair[1].substring(16),
-          pair[0].substring(16),
+          pair[1],
+          pair[0],
           buttonTwoBottomLeft,
           buttonOneBottomRight,
           1,
@@ -354,7 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userRaceArr = blackArr;
         break;
 
-      case "latina":
+      case "latino":
         userRaceArr = latinaArr;
         break;
 
@@ -531,9 +535,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   updateDatabase = function () {
-    userRef.set(trials).catch(function (error) {
-      console.log(error);
-    });
+    userRef
+      .set(trials)
+      .then(function () {
+        console.log("why?");
+        localStorage.clear();
+        window.location.href = "debrief.html?ID=" + id;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   pairs(practiceArr, "practice");
