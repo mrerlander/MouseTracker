@@ -6,6 +6,14 @@ body {
     padding-top: 1rem;
     padding-bottom: 2rem;
   }
+
+  #study-div {
+    padding-top: 5rem;
+  }
+
+  #instructions {
+    padding-top: 5rem;
+  }
   
   #debrief {
     padding-top: 5rem;

@@ -44,12 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
     "Petite",
     "Rice",
     "Family-oriented",
-    "Scientific",
     "Asian"
   ];
   let blackArr = [
     "Strong",
-    "Barbeque",
     "Musical",
     "Cool",
     "Football",
@@ -61,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let latinaArr = [
     "Religious",
     "Pi&ntilde;ata",
-    "Tacos",
     "Catholic",
     "fun",
     "Mariachi",
@@ -72,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let whiteArr = [
     "Suburban",
     "Fortunate",
-    "Patriotic",
     "Rich",
     "American",
     "Christian",
@@ -84,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
     "Feminine",
     "Caring",
     "Caregiver",
-    "Nurse",
     "Pretty",
     "Baking",
     "Loving",
@@ -157,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
           race == "Multiracial" ||
           race == "Other"
         ) {
+          localStorage.setItem("disqualified", true);
           window.location.href = disqualified;
         } else {
           localStorage.setItem("age", age);
@@ -228,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
     age = localStorage.getItem("age");
     race = localStorage.getItem("race");
     gender = localStorage.getItem("gender");
-    console.log(race);
+    
     switch (race.toLowerCase()) {
       case "asian":
         pairs(asianArr, "race");
@@ -247,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       default:
-        console.log("ruh roh");
+        console.log("error: no race");
         break;
     }
     concat();
@@ -367,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       default:
-        console.log("ruh roh");
+        console.log("error: no race");
         break;
     }
     for (let i = 0; i < userRaceArr.length; i++) {
@@ -379,7 +375,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     allPairsOriginal = [].concat(challengePairs, racePairs, genderPairs);
     allPairs = [...allPairsOriginal];
-    console.log(allPairs);
   }
 
   function pairs(arr, arrType) {
@@ -412,7 +407,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function loadTrial() {
     if (practice === true) {
       practiceCounter++;
-      console.log(practiceCounter);
       pairIndex = Math.floor(Math.random() * practicePairs.length);
       pair = practicePairs[pairIndex];
 
@@ -430,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function () {
       trialDiv.classList.remove("invisible");
     } else {
       count++;
-      console.log(count + " in the else of the load");
 
       if (count <= allPairsOriginal.length) {
         do {
@@ -454,7 +447,6 @@ document.addEventListener("DOMContentLoaded", function () {
         counter = 0;
         buttonOneText = pair[0];
         buttonTwoText = pair[1];
-        console.log(buttonOneText);
 
         optionOne.innerHTML = buttonOneText;
         optionTwo.innerHTML = buttonTwoText;
@@ -500,10 +492,8 @@ document.addEventListener("DOMContentLoaded", function () {
       data.screenSize = { vWidth, vHeight };
       data.age = age;
       data.race = race;
-      console.log(race);
       data.gender = gender;
       trials.push(data);
-      console.log(trials);
     } else {
       let data = new Trial(
         otherWord,
@@ -524,7 +514,6 @@ document.addEventListener("DOMContentLoaded", function () {
       data.race = race;
       data.gender = gender;
       trials.push(data);
-      console.log(trials);
     }
 
     mouseCoords = [];
@@ -538,9 +527,8 @@ document.addEventListener("DOMContentLoaded", function () {
     userRef
       .set(trials)
       .then(function () {
-        console.log("why?");
         localStorage.clear();
-        window.location.href = "debrief.html?ID=" + id;
+        window.location.href = "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?ID=" + id;
       })
       .catch(function (error) {
         console.log(error);
