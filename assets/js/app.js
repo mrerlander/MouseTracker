@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let gender;
   let buttonOneText;
   let buttonTwoText;
+  let mouseInterval;
   let instructions = "instructions.html";
   let disqualified = "qualify.html";
   let asianArr = [
@@ -44,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Petite",
     "Rice",
     "Family-oriented",
-    "Asian"
+    "Asian",
   ];
   let blackArr = [
     "Strong",
@@ -54,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Liberal",
     "Masculine",
     "Muscular",
-    "Black"
+    "Black",
   ];
   let latinaArr = [
     "Religious",
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Mariachi",
     "Proud",
     "Farmer",
-    "Latina"
+    "Latina",
   ];
   let whiteArr = [
     "Suburban",
@@ -74,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Christian",
     "Smart",
     "Proper",
-    "White"
+    "White",
   ];
   let womenArr = [
     "Feminine",
@@ -84,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Baking",
     "Loving",
     "Soft",
-    "Woman"
+    "Woman",
   ];
   let practiceArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   let racePairs = [];
@@ -211,11 +212,16 @@ document.addEventListener("DOMContentLoaded", function () {
   let id = userRef.key;
 
   onmousemove = function (e) {
-    if (startClicked) {
-      Coords = { x: e.clientX, y: e.clientY };
-      mouseCoords.push(Coords);
-    }
+      window.mouseX = e.clientX;
+      window.mouseY = e.clientY;
   };
+
+  function mousePosition(){
+    Coords = { x: window.mouseX, y: window.mouseY, time: Date.now() };
+    mouseCoords.push(Coords);
+    console.log(mouseCoords);
+  }
+
 
   let practice = true;
   let practiceCounter = 0;
@@ -224,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
     age = localStorage.getItem("age");
     race = localStorage.getItem("race");
     gender = localStorage.getItem("gender");
-    
+
     switch (race.toLowerCase()) {
       case "asian":
         pairs(asianArr, "race");
@@ -277,10 +283,12 @@ document.addEventListener("DOMContentLoaded", function () {
           startClicked = true;
           startBtn.disabled = true;
           startTime = new Date();
+          mouseInterval = setInterval(mousePosition, (1000 / 60));
           loadTrial();
         }
       }
     });
+
     optionOne.addEventListener("click", function (e) {
       e.preventDefault;
       if (practice === true) {
@@ -301,6 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonOneBottomRight = { x: rect1.right, y: rect1.bottom };
         buttonTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
         buttonClickedCoords = { x: e.clientX, y: e.clientY };
+        clearInterval(mouseInterval);
         saveData(
           pair[0],
           pair[1],
@@ -311,6 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
       }
     });
+
     optionTwo.addEventListener("click", function (e) {
       e.preventDefault;
       if (practice === true) {
@@ -331,6 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonOneBottomRight = { x: rect1.right, y: rect1.bottom };
         buttonTwoBottomLeft = { x: rect2.left, y: rect2.bottom };
         buttonClickedCoords = { x: e.clientX, y: e.clientY };
+        clearInterval(mouseInterval);
         saveData(
           pair[1],
           pair[0],
@@ -528,7 +539,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .set(trials)
       .then(function () {
         localStorage.clear();
-        window.location.href = "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?ID=" + id;
+        window.location.href =
+          "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?ID=" + id;
       })
       .catch(function (error) {
         console.log(error);
