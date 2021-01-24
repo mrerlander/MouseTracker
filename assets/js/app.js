@@ -540,7 +540,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(function () {
         localStorage.clear();
         window.location.href =
-          "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?ID=" + id;
+          "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?id=" + id;
       })
       .catch(function (error) {
         console.log(error);
