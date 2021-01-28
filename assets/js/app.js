@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let mouseInterval;
   let instructions = "instructions.html";
   let disqualified = "qualify.html";
+  let study = "mousetracking001"
   let asianArr = [
     "Smart",
     "Academic",
@@ -540,7 +541,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(function () {
         localStorage.clear();
         window.location.href =
-          "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?id=" + id;
+          "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?id=" + id + "&study=" + study;
       })
       .catch(function (error) {
         console.log(error);
