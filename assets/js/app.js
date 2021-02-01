@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let instructions = "instructions.html";
   let disqualified = "qualify.html";
   let study = "mousetracking001"
+  let breakCount;
+  let breakDiv = document.getElementById("break");
+  let breakVis = false;
   let asianArr = [
     "Smart",
     "Academic",
@@ -220,7 +223,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function mousePosition(){
     Coords = { x: window.mouseX, y: window.mouseY, time: Date.now() };
     mouseCoords.push(Coords);
-    console.log(mouseCoords);
   }
 
 
@@ -277,6 +279,10 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("practice-over").classList.add("invisible");
             leftTrialDiv.classList.remove("invisible");
             rightTrialDiv.classList.remove("invisible");
+          }
+          if(breakVis){
+            breakDiv.classList.add("invisible");
+            breakVis = false;
           }
           let x = e.clientX;
           let y = e.clientY;
@@ -387,6 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     allPairsOriginal = [].concat(challengePairs, racePairs, genderPairs);
     allPairs = [...allPairsOriginal];
+    breakCount = (allPairsOriginal.length / 2);
   }
 
   function pairs(arr, arrType) {
@@ -532,6 +539,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (count == allPairsOriginal.length) {
       startBtn.innerHTML = "Submit";
     }
+
+    console.log("count: " + count + " breakCount: " + breakCount);
+    if (count == breakCount) {
+      breakDiv.classList.remove("invisible");
+      breakVis = true;
+    }
+
     startBtn.disabled = false;
   }
 
