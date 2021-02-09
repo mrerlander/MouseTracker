@@ -41,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let breakCount;
   let breakDiv = document.getElementById("break");
   let breakVis = false;
+  const urlParams = new URLSearchParams(location.search);
+  let surveyURL;
   let asianArr = [
     "Smart",
     "Academic",
@@ -99,6 +101,13 @@ document.addEventListener("DOMContentLoaded", function () {
   let allPairs;
 
   if (checkBox) {
+    if (urlParams.has('student')){
+      localStorage.setItem('student', 'student');
+      localStorage.setItem('surveyURL', 'https://csunsbs.qualtrics.com/jfe/form/SV_00R5UO9MallFCLA?id=');
+    } else {
+      localStorage.setItem('student', 'public');
+      localStorage.setItem('surveyURL', 'https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?id=')
+    }
     checkBox.onchange = function () {
       if (this.checked) {
         nextBtn.disabled = false;
@@ -143,7 +152,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (localStorage.getItem("disqualified")) {
       window.location.href = disqualified;
     } else {
-      localStorage.clear();
       form.onsubmit = submit;
       function submit(e) {
         e.preventDefault();
@@ -512,6 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
       data.age = age;
       data.race = race;
       data.gender = gender;
+      data.testPool = localStorage.getItem('student');
       trials.push(data);
     } else {
       let data = new Trial(
@@ -532,6 +541,7 @@ document.addEventListener("DOMContentLoaded", function () {
       data.age = age;
       data.race = race;
       data.gender = gender;
+      data.testPool = localStorage.getItem('student');
       trials.push(data);
     }
 
@@ -540,7 +550,6 @@ document.addEventListener("DOMContentLoaded", function () {
       startBtn.innerHTML = "Submit";
     }
 
-    console.log("count: " + count + " breakCount: " + breakCount);
     if (count == breakCount) {
       breakDiv.classList.remove("invisible");
       breakVis = true;
@@ -550,12 +559,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   updateDatabase = function () {
+    surveyURL = localStorage.getItem('surveyURL');
     userRef
       .set(trials)
       .then(function () {
         localStorage.clear();
         window.location.href =
-          "https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?id=" + id + "&study=" + study;
+          surveyURL + id + "&study=" + study;
       })
       .catch(function (error) {
         console.log(error);
