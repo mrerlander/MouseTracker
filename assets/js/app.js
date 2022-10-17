@@ -103,10 +103,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (checkBox) {
     if (urlParams.has('student')){
       localStorage.setItem('student', 'student');
-      localStorage.setItem('surveyURL', 'https://csunsbs.qualtrics.com/jfe/form/SV_00R5UO9MallFCLA?id=');
+      localStorage.setItem('surveyURL', 'https://csunsbs.qualtrics.com/jfe/form/SV_6SesU0wzutojsXQ?id=');
     } else {
       localStorage.setItem('student', 'public');
-      localStorage.setItem('surveyURL', 'https://csunsbs.qualtrics.com/jfe/form/SV_1RhmZvrF7mTP9ad?id=')
+      localStorage.setItem('surveyURL', 'https://csunsbs.qualtrics.com/jfe/form/SV_6SesU0wzutojsXQ?id=')
     }
     checkBox.onchange = function () {
       if (this.checked) {
